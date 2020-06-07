@@ -2,12 +2,17 @@ const { randomN } = require('../utils')
 
 module.exports = {
   name: '双色球',
-  redeemDay: 4, // Mon-Sun, 1-7
+  redeemDay: 4, // Sun-Sat, 0-6
   buy() {
-    const result = Array(7).fill(0)
+    const balls = Array(33).fill(0).map((x, i) => i + 1)
+
+    const result = Array(6).fill(0)
     result.forEach((x, i) => {
-      result[i] = randomN(i < 6 ? 33 : 16)
+      const pick = randomN(balls.length) - 1
+      result[i] = balls.splice(pick, 1)[0]
     })
+    result.sort((a, b) => a - b)
+    result.push(randomN(16))
     return result
   },
   redeem(expected, actual) {

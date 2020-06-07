@@ -1,0 +1,5 @@
+name: 'Redeem lottery'
+description: 'Redeem bottery'
+runs:
+  using: 'node12'
+  main: 'index.js'
