@@ -16,7 +16,7 @@ module.exports = {
     return result
   },
   redeem(expected, actual) {
-    const hit = expected.slice(6).reduce((o, x) => {
+    const hit = expected.slice(0, 6).reduce((o, x) => {
       o[x] = 1
       return o
     }, {})
@@ -36,10 +36,10 @@ module.exports = {
       [0, 1, 5],
     ]
 
-    let result
+    let result = 'nothing'
     sheet.some(([r, b, money]) => {
       if (r === redCount && b === blueCount) {
-        result = money
+        result = `${money}(${redCount}+${blueCount})`
         return true
       }
     })
