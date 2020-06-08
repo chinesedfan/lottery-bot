@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Use local action
-        uses: src/actions/buy
+        uses: ./src/actions/buy
 
   redeem:
     needs: prepare
     runs-on: ubuntu-latest
     steps:
       - name: Use local action
-        uses: src/actions/redeem
+        uses: ./src/actions/redeem
