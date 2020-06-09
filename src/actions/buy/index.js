@@ -8,7 +8,7 @@ try {
   const today = (new Date()).getDay()
 
   lotteries.forEach(({ name, redeemDay, buy }) => {
-    if (today === redeemDay - 1) {
+    if (1) {
       const actual = buy()
       saveLotteryResult(octokit, name, actual)
         .catch(error => {
