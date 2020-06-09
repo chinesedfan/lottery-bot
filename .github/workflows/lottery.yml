@@ -3,6 +3,7 @@ name: Scheduled lottery
 on:
   schedule:
     - cron: '0 0 * * *'
+    - cron: '0 13 * * *'
 
 jobs:
   buy:
