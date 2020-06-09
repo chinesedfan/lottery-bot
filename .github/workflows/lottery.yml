@@ -1,9 +1,11 @@
+name: Scheduled lottery
+
 on:
   schedule:
     - cron: '0 0 * * *'
 
 jobs:
-  prepare:
+  buy:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -13,16 +15,20 @@ jobs:
         run: npm install --no-package-lock
         working-directory: ./
 
-  buy:
-    needs: prepare
-    runs-on: ubuntu-latest
-    steps:
       - name: Use local action
         uses: ./src/actions/buy
+        with:
+          ghToken: ${{ secrets.GITHUB_TOKEN }}
 
   redeem:
-    needs: prepare
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Install packages
+        run: npm install --no-package-lock
+        working-directory: ./
+
       - name: Use local action
         uses: ./src/actions/redeem
