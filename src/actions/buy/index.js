@@ -11,13 +11,13 @@ try {
     if (today === redeemDay - 1) {
       const actual = buy()
       saveLotteryResult(octokit, name, actual)
-        .catch(error) => {
+        .catch(error => {
           core.setFailed(error.message)
-        }
+        })
     } else {
       core.info(`No ${name} toady`)
     }
-  })  
+  })
 } catch (error) {
   core.setFailed(error.message)
 }
