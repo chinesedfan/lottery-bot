@@ -28,12 +28,13 @@ async function doRedeem({ octokit, name, redeem }) {
     getOpenIssues(octokit, name)
   ])
 
-  issues.forEach(issue => {
+  issues.forEach(async issue => {
     const actual = extractActual(issue)
     const money = redeem(expected, actual)
-    core.info(`Got ${money} in ${name}: expected=${expected} actual=${actual}`)
+    const body = `Got ${money} in ${name}: expected=${expected} actual=${actual}`
+    core.info(body)
 
-    // TODO: close with comment
+    await closeIssue(octokit, money !== 'nothing', issue.number, body)
   })
 }
 
@@ -54,4 +55,20 @@ function extractActual(issue) {
   return issue.title.split(']')[1]
     .split(',')
     .map(x => +x)
+}
+
+async function closeIssue(octokit, win, issue_number, body) {
+  await octokit.issues.createComment({
+    owner: 'chinesedfan',
+    repo: 'lottery-bot',
+    issue_number,
+    body
+  });
+  await octokit.issues.update({
+    owner: 'chinesedfan',
+    repo: 'lottery-bot',
+    issue_number,
+    labels: win ? ['win'] : [],
+    state: 'closed'
+  })
 }
