@@ -1,5 +1,9 @@
 name: 'Redeem lottery'
 description: 'Redeem bottery'
+inputs:
+  ghToken:
+    description: 'GitHub token'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'

@@ -33,3 +33,5 @@ jobs:
 
       - name: Use local action
         uses: ./src/actions/redeem
+        with:
+          ghToken: ${{ secrets.GITHUB_TOKEN }}
