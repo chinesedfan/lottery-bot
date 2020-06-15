@@ -34,7 +34,7 @@ async function doRedeem({ octokit, name, redeem }) {
     const body = `Got ${money} in ${name}: expected=${expected} actual=${actual}`
     core.info(body)
 
-    await closeIssue(octokit, money !== 'nothing', issue.number, body)
+    await closeIssue(octokit, !/nothing/.test(money), issue.number, body)
   })
 }
 
