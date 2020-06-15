@@ -36,7 +36,7 @@ module.exports = {
       [0, 1, 5],
     ]
 
-    let result = 'nothing'
+    let result = `nothing(${redCount}+${blueCount})`
     sheet.some(([r, b, money]) => {
       if (r === redCount && b === blueCount) {
         result = `${money}(${redCount}+${blueCount})`
