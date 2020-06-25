@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "test:crawler": "node test/crawler $1" 
+  },
   "dependencies": {
     "@actions/core": "^1.2.4",
     "@actions/github": "^3.0.0",
