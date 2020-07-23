@@ -20,8 +20,8 @@ module.exports = {
       o[x] = 1
       return o
     }, {})
-    const redCount = actual.filter(x => hit[x]).length
-    const blueCount = actual.indexOf(expected[6]) < 0 ? 0 : 1
+    const redCount = actual.slice(0, 6).filter(x => hit[x]).length
+    const blueCount = actual[6] === expected[6] ? 1 : 0
 
     const sheet = [
       [6, 1, '<1000w'],
