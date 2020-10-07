@@ -8,9 +8,9 @@ try {
   const octokit = github.getOctokit(ghToken)
   const today = (new Date()).getDay()
 
-  lotteries.forEach(({ name, redeemDays, redeem }) => {
+  lotteries.forEach(({ id, name, redeemDays, redeem }) => {
     if (redeemDays.indexOf(today) >= 0) {
-      doRedeem({ octokit, name, redeem })
+      doRedeem({ octokit, id, name, redeem })
         .catch(error => {
           core.setFailed(error.message)
         })
@@ -22,9 +22,9 @@ try {
   core.setFailed(error.message)
 }
 
-async function doRedeem({ octokit, name, redeem }) {
+async function doRedeem({ octokit, id, name, redeem }) {
   const [{expected, openDay}, issues] = await Promise.all([
-    crawler(),
+    crawler(id),
     getOpenIssues(octokit, name)
   ])
 

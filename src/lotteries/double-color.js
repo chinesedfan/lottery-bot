@@ -1,6 +1,7 @@
 const { randomN } = require('../utils')
 
 module.exports = {
+  id: 'ssq',
   name: '双色球',
   redeemDays: [0, 2, 4], // Sun-Sat, 0-6
   buy() {
