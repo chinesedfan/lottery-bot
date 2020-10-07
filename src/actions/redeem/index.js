@@ -34,8 +34,17 @@ async function doRedeem({ octokit, name, redeem }) {
     const body = `Got ${money} in ${name}: expected=${expected} actual=${actual}`
     core.info(body)
 
-    await closeIssue(octokit, !/nothing/.test(money), issue.number, body)
+    await closeIssue(octokit, issue.number, body, calLabels(money))
   })
+}
+
+function calLabels(money) {
+  const win = !/nothing/.test(money)
+  if (win) {
+    return ['win', money.split('(')[0]]
+  } else {
+    return []
+  }
 }
 
 async function getOpenIssues(octokit, name) {
@@ -57,7 +66,7 @@ function extractActual(issue) {
     .map(x => +x)
 }
 
-async function closeIssue(octokit, win, issue_number, body) {
+async function closeIssue(octokit, issue_number, body, labels) {
   await octokit.issues.createComment({
     owner: 'chinesedfan',
     repo: 'lottery-bot',
@@ -68,7 +77,7 @@ async function closeIssue(octokit, win, issue_number, body) {
     owner: 'chinesedfan',
     repo: 'lottery-bot',
     issue_number,
-    labels: win ? ['win'] : [],
+    labels,
     state: 'closed'
   })
 }
