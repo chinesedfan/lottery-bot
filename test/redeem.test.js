@@ -14,23 +14,30 @@ describe('action redeem', () => {
     Date = REAL_DATE
   })
 
-  it('should set correct labels', () => {
+  it('should set correct labels', (done) => {
     mockRedeemDay(4) // double-color
     mockSingleIssue(octokit)
-    mockExpected([1,2,0,0,0,0,1]) // 5(2+1)
+    mockExpected({
+      expected: [1,2,0,0,0,0,1],
+      openDay: '2020-01-02',
+    }) // 5(2+1)
 
     runAction()
 
     setTimeout(() => {
-      expect(octokit.issues.createComment).toHaveBeenLastCalledWith({
-        body: 'Got 5(3+0)'
-      })
-      expect(octokit.issues.update).toHaveBeenLastCalledWith({
+      expect(getLastCallFirstParameter(octokit.issues.createComment).body).toMatch('Got 5(2+1)')
+      expect(getLastCallFirstParameter(octokit.issues.update)).toMatchObject({
         labels: ['win', '5']
       })
+      done()
     })
   })
 })
+
+function getLastCallFirstParameter(fn) {
+  const calls = fn.mock.calls
+  return calls[calls.length - 1][0]
+}
 
 function mockedOctokit() {
   return {
@@ -56,13 +63,14 @@ function mockSingleIssue(octokit) {
       items: [{
         number: 123,
         title: '[双色球] 1,2,3,4,5,6,1',
+        create_at: '2020-01-01T00:19:54Z',
       }]
     }
   }))
 }
-function mockExpected(expected) {
+function mockExpected(ret) {
   jest.doMock('../src/crawler/500com', () => {
-    return () => expected
+    return () => ret
   })
 }
 

@@ -23,12 +23,17 @@ try {
 }
 
 async function doRedeem({ octokit, name, redeem }) {
-  const [expected, issues] = await Promise.all([
+  const [{expected, openDay}, issues] = await Promise.all([
     crawler(),
     getOpenIssues(octokit, name)
   ])
 
   issues.forEach(async issue => {
+    if (openDay < issue.create_at) {
+      core.info(`skip issue ${issue.number}`)
+      return
+    }
+
     const actual = extractActual(issue)
     const money = redeem(expected, actual)
     const body = `Got ${money} in ${name}: expected=${expected} actual=${actual}`
