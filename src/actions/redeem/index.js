@@ -8,8 +8,8 @@ try {
   const octokit = github.getOctokit(ghToken)
   const today = (new Date()).getDay()
 
-  lotteries.forEach(({ name, redeemDay, redeem }) => {
-    if (today === redeemDay) {
+  lotteries.forEach(({ name, redeemDays, redeem }) => {
+    if (redeemDays.indexOf(today) >= 0) {
       doRedeem({ octokit, name, redeem })
         .catch(error => {
           core.setFailed(error.message)

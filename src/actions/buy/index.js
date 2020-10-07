@@ -7,7 +7,7 @@ try {
   const octokit = github.getOctokit(ghToken)
   const today = (new Date()).getDay()
 
-  lotteries.forEach(({ name, redeemDay, buy }) => {
+  lotteries.forEach(({ name, redeemDays, buy }) => {
     if (1) {
       const actual = buy()
       saveLotteryResult(octokit, name, actual)
