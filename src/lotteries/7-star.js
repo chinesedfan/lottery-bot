@@ -12,17 +12,17 @@ module.exports = {
     return result
   },
   redeem(expected, actual) {
-    const hits = actual.map(x => expected.indexOf(x) >= 0)
-
     let max = 1
-    let c = 0
-    hits.forEach((x, i) => {
-      if (hits[i]) {
-        c++
-        max = Math.max(max, c)
-      } else {
-        c = 0
-      }
+    actual.forEach((a, i) => {
+      expected.forEach((b, j) => {
+        if (a === b) {
+          let c = 0
+          while (i < 7 && j < 7 && actual[i++] === expected[j++]) {
+            c++
+          }
+          max = Math.max(max, c)
+        }
+      })
     })
 
     const sheet = [0, 0, 5, 20, 300, 1800, '>3600', '<=500w']
